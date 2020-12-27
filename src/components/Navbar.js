@@ -8,7 +8,6 @@ import { FaBars } from "react-icons/fa";
 const Nav = styled.nav`
   height: 60px;
   display: flex;
-  background: red;
   justify-content: space-between;
   padding: 1rem 2rem;
   z-index: 100;
