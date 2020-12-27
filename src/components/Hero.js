@@ -80,6 +80,19 @@ const HeroContent = styled.div`
   max-width: 1600px;
   width: calc(100% - 100px);
   color: #fff;
+  h1 {
+    /* min and maximum size the H1 can take */
+    font-size: clamp(1rem, 8vw, 2rem);
+    font-weight: 400;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 20px rgb(0, 0, 0, 0.4);
+    text-align: left;
+    margin-bottom: 0.8rem;
+  }
+  p {
+    margin-bottom: 1.2 rem;
+    text-shadow: 0px 0px 20px rgb(0, 0, 0, 0.4);
+  }
 `;
 
 const Arrow = styled(IoMdArrowRoundForward)``;
