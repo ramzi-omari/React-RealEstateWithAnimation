@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled, { css } from "styled-components/macro";
 import { Button } from "./Button";
 import { IoMdArrowRoundForward } from "react-icons/io";
@@ -95,7 +95,9 @@ const HeroContent = styled.div`
   }
 `;
 
-const Arrow = styled(IoMdArrowRoundForward)``;
+const Arrow = styled(IoMdArrowRoundForward)`
+  margin-left: 0.5rem;
+`;
 const arrowButtons = css`
   width: 50px;
   height: 50px;
@@ -121,35 +123,76 @@ const NextArrow = styled(IoArrowForward)`
 `;
 
 const Hero = ({ slides }) => {
+  const [current, setCurrent] = useState(0);
+  // length number of image in our Data
+  const length = slides.length;
+  const timeout = useRef(null);
+
+  useEffect(() => {
+    const nextSlide = () => {
+      setCurrent((current) => (current === length - 1 ? 0 : current + 1));
+    };
+    timeout.current = setTimeout(nextSlide, 2000);
+
+    return function () {
+      if (timeout.current) {
+        clearTimeout(timeout.current);
+      }
+    };
+  }, [current, length]);
+
+  const nextSlide = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    setCurrent(current === length - 1 ? 0 : current + 1);
+  };
+
+  const prevSlide = () => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    setCurrent(current === 0 ? length - 1 : current - 1);
+  };
+
+  // if there's no data return null
+  if (!Array.isArray(slides) || slides.length <= 0) {
+    return null;
+  }
+
   return (
     <HeroSection>
       <HeroWrapper>
         {slides.map((slide, index) => {
           return (
             <HeroSlide key={index}>
-              <HeroSlider>
-                <HeroImage src={slide.image} alt={slide.alt} />
-                <HeroContent>
-                  <h1>{slide.title}</h1>
-                  <p>{slide.price}</p>
-                  <Button
-                    to={slide.path}
-                    primary="true"
-                    css={`
-                      max-width: 160px;
-                    `}
-                  >
-                    {slide.label}
-                    <Arrow></Arrow>
-                  </Button>
-                </HeroContent>
-              </HeroSlider>
+              {/* && means returns if the condition before is true 
+              and this to change the image depends on index*/}
+              {index === current && (
+                <HeroSlider>
+                  <HeroImage src={slide.image} alt={slide.alt} />
+                  <HeroContent>
+                    <h1>{slide.title}</h1>
+                    <p>{slide.price}</p>
+                    <Button
+                      to={slide.path}
+                      primary="true"
+                      css={`
+                        max-width: 160px;
+                      `}
+                    >
+                      {slide.label}
+                      <Arrow></Arrow>
+                    </Button>
+                  </HeroContent>
+                </HeroSlider>
+              )}
             </HeroSlide>
           );
         })}
         <SliderButtons>
-          <PrevArrow></PrevArrow>
-          <NextArrow></NextArrow>
+          <PrevArrow onClick={prevSlide}></PrevArrow>
+          <NextArrow onClick={nextSlide}></NextArrow>
         </SliderButtons>
       </HeroWrapper>
     </HeroSection>
