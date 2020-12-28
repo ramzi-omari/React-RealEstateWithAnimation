@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components/macro";
 import { Link } from "react-router-dom";
 import { menuData } from "../data/MenuData";
 import { Button } from "./Button";
 import { FaBars } from "react-icons/fa";
+import "./NavStyle.css";
 
-const Nav = styled.nav`
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  z-index: 100;
-  position: fixed;
-  width: 100%;
-`;
+// const Nav = styled.nav`
+//   height: 60px;
+//   display: flex;
+//   justify-content: space-between;
+//   padding: 1rem 2rem;
+//   z-index: 100;
+//   position: fixed;
+//   width: 100%;
+//   /* background: transparent; */
+
+//   background: ${({ aCtive }) => (aCtive ? "transparent" : "red")};
+
+//   /* &::active {
+//     background: red;
+//   } */
+// `;
 
 const NavLink = css`
   color: #fff;
@@ -70,8 +78,20 @@ const NavBtn = styled.div`
 `;
 
 const Navbar = ({ toggle }) => {
+  const [navBar, SetNavbar] = useState(false);
+
+  const changeBack = () => {
+    if (window.scrollY >= 80) {
+      SetNavbar(true);
+    } else {
+      SetNavbar(false);
+    }
+  };
+
+  window.addEventListener("scroll", changeBack);
+
   return (
-    <Nav>
+    <nav className={navBar ? "navbar active" : "navbar"}>
       <Logo to="/">ELIXR</Logo>
       <MenuBars onClick={toggle}></MenuBars>
       <NavMenu>
@@ -86,7 +106,7 @@ const Navbar = ({ toggle }) => {
           Contact Us
         </Button>
       </NavBtn>
-    </Nav>
+    </nav>
   );
 };
 

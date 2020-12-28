@@ -72,7 +72,7 @@ const InfoSection = ({
   return (
     <Section>
       <Container>
-        <ColumnLeft>
+        <ColumnLeft reverse={reverse}>
           <h1>{heading}</h1>
           <p>{paragraphOne}</p>
           <p>{paragraphTwo}</p>
